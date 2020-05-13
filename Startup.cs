@@ -6,6 +6,7 @@ using HelloDocker.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +25,10 @@ namespace HelloDocker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // note the server param - host.docker.internal finds the correct ip, 1433 is the port
+            services.AddDbContext<ProductDbContext>(options => options.UseSqlServer("server=host.docker.internal,1433;database=helloDocker;user Id=sa;password=Welcome2020!;Integrated Security=false"));
+
+            services.AddSingleton(Configuration);
             services.AddTransient<IRepository, Repository>();
             services.AddControllersWithViews();
         }
@@ -54,6 +59,8 @@ namespace HelloDocker
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            SeedData.EnsurePopulated(app);
         }
     }
 }

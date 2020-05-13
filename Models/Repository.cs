@@ -10,6 +10,13 @@ namespace HelloDocker.Models
              new Product{ Name = "Nevermind", Category="Alternative", ProductId=1994, Price=10 } };
 
 
-        public IQueryable<Product> Products => DummyData.AsQueryable<Product>();
+        private ProductDbContext _context;
+
+        public Repository(ProductDbContext ctx)
+        {
+            _context = ctx;
+        }
+
+        public IQueryable<Product> Products => _context.Products;
     };
 }
