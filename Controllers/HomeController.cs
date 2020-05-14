@@ -32,6 +32,23 @@ namespace HelloDocker.Controllers
             return View(_repository.Products);
         }
 
+        [HttpPost]
+        public IActionResult Products(Product product)
+        {
+            try
+            {
+                if(product != null && !string.IsNullOrWhiteSpace(product.Name))
+                {
+                    _repository.Add(product);
+                }
+
+                return RedirectToAction("Index");
+            } catch
+            {
+                return BadRequest();
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

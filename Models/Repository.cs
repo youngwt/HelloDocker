@@ -1,15 +1,10 @@
 ﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace HelloDocker.Models
 {
     public class Repository : IRepository
     {
-
-        private static Product[] DummyData = new Product[]
-            {new Product{ Name = "Abbey Road", Category="Classic Rock", ProductId=1969, Price=10 },
-             new Product{ Name = "Nevermind", Category="Alternative", ProductId=1994, Price=10 } };
-
-
         private ProductDbContext _context;
 
         public Repository(ProductDbContext ctx)
@@ -18,5 +13,23 @@ namespace HelloDocker.Models
         }
 
         public IQueryable<Product> Products => _context.Products;
+
+        public void Add (Product item)
+        {
+            _context.Products.Add(item);
+
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            if(product != null)
+            {
+                _context.Remove(product);
+                _context.SaveChanges();
+            }
+        }
     };
 }

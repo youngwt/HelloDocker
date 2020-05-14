@@ -26,7 +26,8 @@ namespace HelloDocker
         public void ConfigureServices(IServiceCollection services)
         {
             // note the server param - host.docker.internal finds the correct ip, 1433 is the port
-            services.AddDbContext<ProductDbContext>(options => options.UseSqlServer("server=host.docker.internal,1433;database=helloDocker;user Id=sa;password=Welcome2020!;Integrated Security=false"));
+            services.AddDbContext<ProductDbContext>(
+                options => options.UseSqlServer("server=host.docker.internal,1433;database=helloDocker;user Id=sa;password=Welcome2020!;Integrated Security=false"));
 
             services.AddSingleton(Configuration);
             services.AddTransient<IRepository, Repository>();
